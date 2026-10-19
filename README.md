@@ -418,7 +418,7 @@ account setup available so an admin can finish configuration in Settings.
 | **CEREBRAS_BASE_URL** | `https://api.cerebras.ai/v1` (default) | Cerebras base URL. |
 | **ANTHROPIC_API_KEY** | Required for `LLM=anthropic` | Anthropic API key. |
 | **ANTHROPIC_MODEL** | `claude-3-5-sonnet-20241022` (default) | Anthropic model. |
-| **CODEX_MODEL** | Required for `LLM=codex` | Codex model. The OAuth flow maps host port `1455` for its callback. |
+| **CODEX_MODEL** | Required for `LLM=codex` | ChatGPT/Codex OAuth model ID, for example `gpt-6.1-sol`. Supports `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, and all existing GPT-5.6 and earlier picker options. The default remains `gpt-5.6-luna`. Picker entries do not guarantee access for your account; provider access errors are surfaced by Presenton. The OAuth flow maps host port `1455` for its callback. |
 | **CUSTOM_LLM_URL** | Required for `LLM=custom` | OpenAI-compatible base URL. The server must implement `POST /v1/chat/completions`; a provider-specific completion endpoint is insufficient. |
 | **CUSTOM_LLM_API_KEY** | Provider-dependent | Custom-provider API key. |
 | **CUSTOM_MODEL** | Required for `LLM=custom` | Custom-provider model ID. |

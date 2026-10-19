@@ -1,5 +1,8 @@
 import asyncio
 
+import pytest
+
+from constants.llm import SUPPORTED_CODEX_MODELS
 from models.sql.user import User
 from services.provider_settings import (
     merge_provider_settings,
@@ -24,6 +27,22 @@ class ProviderSettingsSession:
 
     async def refresh(self, _row):
         return None
+
+
+@pytest.mark.parametrize("model", sorted(SUPPORTED_CODEX_MODELS))
+def test_codex_model_survives_saved_settings_round_trip(monkeypatch, tmp_path, model):
+    path = tmp_path / "userConfig.json"
+    monkeypatch.setenv("USER_CONFIG_PATH", str(path))
+    config = {"LLM": "codex", "CODEX_MODEL": model}
+    update_user_config_file(str(path), lambda _: config)
+    session = ProviderSettingsSession()
+
+    migrated = asyncio.run(migrate_provider_settings_from_file(session))
+
+    assert migrated == config
+    assert session.row.config == config
+    assert read_user_config_file(str(path)) == config
+    assert merge_provider_settings(migrated, {"WEB_GROUNDING": True})["CODEX_MODEL"] == model
 
 
 def test_user_table_has_username_and_no_email_column():
